@@ -1,10 +1,11 @@
 import os
 from flask import Flask, jsonify
+from flask_cors import CORS
 import redis
 
 app = Flask(__name__)
+CORS(app)
 
-# Reads the DB host from environment variable, defaults to 'db-tier' (service/container name)
 DB_HOST = os.getenv("DB_HOST", "db-tier")
 DB_PORT = int(os.getenv("DB_PORT", 6379))
 
@@ -24,7 +25,6 @@ def get_data():
     except Exception as e:
         views = "Unavailable"
         db_status = f"Database unreachable: {str(e)}"
-
     return jsonify({
         "tier": "Tier 2 (Flask API)",
         "database_status": db_status,
